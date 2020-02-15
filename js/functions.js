@@ -406,14 +406,39 @@ function addMemberInfo() {
 
 // functions for Cloudinary
 function readURL(input) {
+  console.log("readURL");
   if (input.files && input.files[0]) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-        $('#上傳優惠券圖片')
-            .attr('src', e.target.result)
-            .width(520)
-            //.height(200);
+      console.log("aaa");
+      $('#上傳優惠券圖片')
+        .attr('src', e.target.result)
+        .width(520)
+        //.height(200);
+      
+      $("#上傳訊息").text("圖片尚未上傳");
+      securePicUrl ="";
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function readURL_detail(input) {
+  console.log("readURL_detail");
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      console.log("bbb");
+      $('#優惠券圖片')
+        .attr('src', e.target.result)
+        .width(520)
+        //.height(200);
+      
+      $("#上傳訊息-詳細").text("圖片尚未上傳");
+      securePicUrl ="";
     };
 
     reader.readAsDataURL(input.files[0]);
@@ -429,11 +454,29 @@ function onSuccess(){
   
   securePicUrl = response.secure_url;
   
-  console.log("Success", securePicUrl);
+  if ( securePicUrl != undefined) {
+    console.log("Success", securePicUrl);
+    if ($("#上傳訊息").text() == "圖片上傳中 ...") $("#上傳訊息").text("圖片上傳成功");
+    if ($("#上傳訊息-詳細").text() == "圖片上傳中 ...") $("#上傳訊息-詳細").text("圖片上傳成功");
+  } else {
+    alert("圖片上傳失敗");
+    if ($("#上傳訊息").text() == "圖片上傳中 ...") $("#上傳訊息").text("圖片上傳失敗");
+    if ($("#上傳訊息-詳細").text() == "圖片上傳中 ...") $("#上傳訊息-詳細").text("圖片上傳失敗");    
+  }
 }    
     
 function uploadToCloudinary() {
   console.log("upload file to Cloudinary");
+  
+  var 需要上傳 = ($("#上傳訊息").text() == "圖片尚未上傳" );
+
+  if ( !需要上傳 ){
+    alert("圖片尚未選擇或圖片已上傳");
+    return 0;
+  }
+  
+  $("#上傳訊息").text("圖片上傳中 ...");
+  
   var formElement =document.getElementById('picUpload')
   var dataToSend = new FormData(formElement)
   dataToSend.append("upload_preset","bxh4xvph");
@@ -443,6 +486,31 @@ function uploadToCloudinary() {
   xhr.onprogress = onProgress;
   xhr.onload = onSuccess;
   xhr.open("post", "https://api.cloudinary.com/v1_1/sabg-img-box/image/upload");
+  console.log(dataToSend)
   xhr.send(dataToSend);
   
+}
+
+function updateToCloudinary() {
+  console.log("update file to Cloudinary");
+  
+  var 需要上傳 = ($("#上傳訊息-詳細").text() == "圖片尚未上傳" );
+
+  if ( !需要上傳 ){
+    alert("圖片尚未選擇或圖片已上傳");
+    return 0;
+  }
+  
+  $("#上傳訊息-詳細").text("圖片上傳中 ...");
+  
+  var formElement =document.getElementById('picUpdate')
+  var dataToSend = new FormData(formElement)
+  dataToSend.append("upload_preset","bxh4xvph");
+  //console.log(dataToSend.getAll("upload_preset"));
+  
+  var xhr = new XMLHttpRequest();
+  xhr.onprogress = onProgress;
+  xhr.onload = onSuccess;
+  xhr.open("post", "https://api.cloudinary.com/v1_1/sabg-img-box/image/upload");
+  xhr.send(dataToSend);  
 }

@@ -133,6 +133,8 @@
         <label class="custom-file-upload" onclick="uploadToCloudinary()">
           上傳
         </label> 
+        
+        <span id="上傳訊息" style="margin-left:20px; color:gray">圖片尚未選擇</span>
       </form> 
             
       <img id="上傳優惠券圖片" src="#" alt="" style="margin-left: 20px; margin-top: 10px;" /> 
@@ -163,14 +165,16 @@
       <img id="優惠券圖片" src="" alt="" width="490" style="margin-left:20px">
       
       <form id ="picUpdate" class="couponLabel" style="width: 100%;margin-bottom:20px">       
-        <label for="file-upload" class="custom-file-upload">
+        <label for="file-update" class="custom-file-upload">
             選擇圖片
         </label>
-        <input id="file-update" type="file" name="file" onchange="readURL(this);">  
+        <input id="file-update" type="file" name="file" onchange="readURL_detail(this);">  
         
         <label class="custom-file-upload" onclick="updateToCloudinary()">
           上傳
         </label> 
+
+        <span id="上傳訊息-詳細" style="margin-left:20px; color:gray"></span>        
       </form>
       <br>      
       <br>
@@ -258,7 +262,7 @@
     var couponNumber;
     
     // picture URL reurn from Cloudinary in onSuccess()
-    var securePicUrl;
+    var securePicUrl="";
 
     // 從 Firebase 資料庫取得 couponData, couponHistory, memberData, couponMember, coachSet, 
     // 定義在 js/firebase-ops.js 中
@@ -276,7 +280,7 @@
   <script type="text/javascript">
     var couponNum = 0; // Update from Database
     var inaddCoupon = false;
-    var version = " V1.0";
+    var version = " V2.0";
 
 //    $("#titleHeader").text("林口運動中心 - 優惠券管理"+version);
     $("#titleHeader").text("優惠券管理"+version);    
